@@ -9,6 +9,7 @@ const Promise = require('bluebird'); //eslint-disable-line
 const debug = require('debug')('restServ:server');
 
 const errors = require('./lib/error-middleware.js');
+const basicAuthRouter = require('./route/basic-auth-router.js');
 
 dotenv.load();
 
@@ -21,6 +22,7 @@ let morganFormat = process.env.PRODUCTION ? 'common:' : 'dev';
 
 app.use(cors());
 app.use(morgan(morganFormat));
+app.use(basicAuthRouter);
 app.use(errors);
 
 const server = module.exports = app.listen(PORT, () => {

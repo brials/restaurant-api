@@ -3,7 +3,7 @@
 const debug = require('debug')('restServ:basic-auth-router');
 const User = require('../model/user.js');
 const Router = require('express').Router;
-const basicAuth = require('../lib/basic-auth-router');
+const basicAuth = require('../lib/basic-auth-middleware');
 const jsonParser = require('body-parser').json();
 
 
@@ -20,11 +20,11 @@ authRouter.post('/api/signup', jsonParser, function(req, res, next){
   user.generatePasswordHash(password)
   .then(user => user.save())
   .then(user => user.generateToken())
-  .then(token => res.sent(token))
+  .then(token => res.send(token))
   .catch(next);
 });
 
-authRouter.get('/api/signin', basicAuth, function(req, res, next){
+authRouter.get('/api/signin/', basicAuth, function(req, res, next){
   debug('GET: /api/signin');
 
   User.findOne({username: req.auth.username})

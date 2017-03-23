@@ -1,4 +1,3 @@
-
 'use strict';
 
 //code modified from bnation slugram repo

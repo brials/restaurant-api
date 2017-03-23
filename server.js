@@ -10,6 +10,7 @@ const debug = require('debug')('restServ:server');
 
 const errors = require('./lib/error-middleware.js');
 const basicAuthRouter = require('./route/basic-auth-router.js');
+const employeeRouter = require('./route/employee-router.js');
 
 dotenv.load();
 
@@ -22,6 +23,7 @@ let morganFormat = process.env.PRODUCTION ? 'common:' : 'dev';
 
 app.use(cors());
 app.use(morgan(morganFormat));
+app.use(employeeRouter);
 app.use(basicAuthRouter);
 app.use(errors);
 

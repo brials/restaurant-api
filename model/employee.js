@@ -5,8 +5,6 @@ const Schema = mongoose.Schema;
 const debug = require('debug')('restServ:employee');
 const createError = require('http-errors');
 
-const Table = require('./table.js');
-
 const employeeSchema = Schema({
   name: { type: String, required: true},
   employeeTitle: { type: String, required: true},
@@ -17,38 +15,36 @@ const employeeSchema = Schema({
 
 const Employee = module.exports = mongoose.model('employee', employeeSchema);
 
-Employee.findByIdAndAddTable = function(id, table){
-  debug('findByIdAndAddPost');
+Employee.findByIdAndAddTable = function(id, tableId){
+  debug('findByIdAndAddTable');
 
   return Employee.findById(id)
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(employee => {
-    this.tempEmployee = employee;
-    return new Table(table).save();
+    employee.tables.push(tableId);
+    return Employee.findByIdAndUpdate(id, employee, {new: true});
   })
-  .then(table => {
-    this.tempEmployee.tables.push(table._id);
-    this.tempTable = table;
-    return this.tempEmployee.save();
-  })
-  .then(() => {
-    return this.tempTable;
+  .then(employee => {
+    return employee;
   });
 };
 
 Employee.findByIdAndRemoveTable = function(id, tableId){
-  debug('findByIdAndRemovePost');
+  debug('findByIdAndRemoveTable');
   Employee.findById(id)
   .then(employee => {
+    console.log('in findbyand Remove');
     for(var i = 0; i < employee.tables.length; i++){
       if(employee.table[i] == tableId){
         employee.table.splice(i, 1);
+        console.log('removal happened');
       }
     }
     return Employee.findByIdAndUpdate(id, employee, {new: true});
   })
-  .then(() => {
-    return tableId;
+  .then(employee => {
+    console.log('in find by id and removeTable');
+    return employee;
   })
   .catch(err => Promise.reject(createError(404, err.message)));
 };

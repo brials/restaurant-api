@@ -6,8 +6,8 @@ const expect = require('chai').expect;
 const awsMocks = require('./lib/aws-mocks.js'); //eslint-disable-line
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
-const cleanDB = require('./lib/test-remove.js');
 
+const cleanDB = require('./lib/test-remove.js');
 const mockEmployee = require('./lib/employee-mock.js');
 const mockUser = require('./lib/user-mock.js');
 

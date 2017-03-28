@@ -51,7 +51,6 @@ tableRouter.put('/api/employee/:employeeId/addTable/:tableId', bearerAuth, funct
 
 tableRouter.put('/api/employee/:employeeId/removeTable/:tableId', bearerAuth, function(req, res, next){
   debug('PUT /api/employee/:employeeId/removeTable/:tableId');
-
   return Table.findById(req.params.tableId)
   .then(table => {
     return Employee.findByIdAndRemoveTable(req.params.employeeId, table._id);
@@ -66,6 +65,9 @@ tableRouter.delete('/api/employee/:employeeId/table/:tableId', bearerAuth, funct
   Employee.findByIdAndRemoveTable(req.params.employeeId, req.params.tableId);
 
   Table.findByIdAndRemove(req.params.tableId)
+  .then(() => {
+    return Employee.findByIdAndRemoveTable(req.params.employeeId, req.params.tableId);
+  })
   .then(() => res.sendStatus(204))
   .catch(next);
 });

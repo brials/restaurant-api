@@ -237,8 +237,100 @@ describe('Table Route Tests', function(){
         .end((err, res) => {
           if(err) return done(err);
           expect(res.status).to.equal(200);
-          console.log(res.body);
           expect(res.body.tables.length).to.equal(0);
+          done();
+        });
+      });
+    });
+    describe('with 1 valid ids and tokens', () => {
+      it('should return an employee with an empty tables array', done => {
+        request.put(`${url}/api/employee/badid/removeTable/${this.tempTable._id}`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+    describe('with 1 valid ids and tokens', () => {
+      it('should return an employee with an empty tables array', done => {
+        request.put(`${url}/api/employee/${this.tempEmployee._id}/removeTable/badid`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+    describe('with 1 valid ids and tokens', () => {
+      it('should return an employee with an empty tables array', done => {
+        request.put(`${url}/api/employee/${this.tempEmployee._id}/removeTable/${this.tempTable._id}`)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      });
+    });
+  });
+  describe('Delete /api/employee/:employeeId/table/:tableId', function(){
+    beforeEach(done => userMock.call(this, done));
+    beforeEach(done => employeeMock.call(this, done));
+    beforeEach(done => tableMock.call(this, done));
+    beforeEach(done => {
+      this.tempEmployee.tables.push(this.tempTable._id);
+      Employee.findByIdAndUpdate(this.tempEmployee._id, this.tempEmployee, {new:true})
+      .then(employee => {
+        this.tempEmployee = employee;
+        done();
+      })
+      .catch(done);
+    });
+    describe('with 2 valid ids and a token', () => {
+      it('should return a 404', done => {
+        request.delete(`${url}/api/employee/${this.tempEmployee._id}/table/${this.tempTable._id}`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(204);
+          done();
+        });
+      });
+    });
+    describe('with 1 valid id and a token', () => {
+      it('should return a 404', done => {
+        request.delete(`${url}/api/employee/badid/table/${this.tempTable._id}`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+    describe('with 1 valid id and a token', () => {
+      it('should return a 404', done => {
+        request.delete(`${url}/api/employee/${this.tempEmployee._id}/table/badid`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+    describe('with 2 valid id and no token', () => {
+      it('should return a 401', done => {
+        request.delete(`${url}/api/employee/${this.tempEmployee._id}/table/${this.tempTable._id}`)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
           done();
         });
       });

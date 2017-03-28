@@ -31,19 +31,16 @@ Employee.findByIdAndAddTable = function(id, tableId){
 
 Employee.findByIdAndRemoveTable = function(id, tableId){
   debug('findByIdAndRemoveTable');
-  Employee.findById(id)
+  return Employee.findById(id)
   .then(employee => {
-    console.log('in findbyand Remove');
     for(var i = 0; i < employee.tables.length; i++){
-      if(employee.table[i] == tableId){
-        employee.table.splice(i, 1);
-        console.log('removal happened');
+      if(employee.tables[i] == tableId.toString()){
+        employee.tables.splice(i, 1);
       }
     }
-    return Employee.findByIdAndUpdate(id, employee, {new: true});
+    return Employee.findByIdAndUpdate(employee._id, employee, {new: true});
   })
   .then(employee => {
-    console.log('in find by id and removeTable');
     return employee;
   })
   .catch(err => Promise.reject(createError(404, err.message)));

@@ -6,9 +6,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const customerSchema = Schema({
-  tableId: {type: Schema.Type.ObjectId, required: true},
-  reservationId: {type: Schema.Type.ObjectId},
-  menuItems: [{type: Schema.Type.ObjectId, ref: 'menuItem'}],
+  tableId: {type: Schema.Types.ObjectId, required: true},
+  reservationId: {type: Schema.Types.ObjectId},
+  menuItems: [{type: Schema.Types.ObjectId, ref: 'menuItem'}],
   arrivalTime: {type: Date, default: Date.now},
   lastVisit: {type: Date, default: Date.now}
 });

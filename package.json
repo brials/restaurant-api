@@ -7,7 +7,7 @@
     "test": "DEBUG='restServ*' mocha",
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "start": "DEBUG='restServ*' node server.js",
-    "lint": "./node_modules/eslint/lib/eslint.js ."
+    "lint": "./node_modules/eslint/bin/eslint.js ."
   },
   "repository": {
     "type": "git",

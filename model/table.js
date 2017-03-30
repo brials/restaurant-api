@@ -16,7 +16,7 @@ const tableSchema = Schema({
 
 const Table = module.exports = mongoose.model('table', tableSchema);
 
-tableSchema.findByIdAndAddReservation = function(id, reservation){
+Table.findByIdAndAddReservation = function(id, reservation){
   debug('findByIdAndAddReservation');
 
   return Table.findById(id)
@@ -35,14 +35,14 @@ tableSchema.findByIdAndAddReservation = function(id, reservation){
   });
 };
 
-tableSchema.findByIdAndRemoveReservation = function(id, reservationId){
+Table.findByIdAndRemoveReservation = function(id, reservationId){
   debug('findByIdAndRemoveReservation');
 
   return Table.findById(id)
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(table => {
     for(var i = 0; i < table.reservations.length; i++){
-      if(reservationId == table.reservations[i]){
+      if(reservationId.toString() == table.reservations[i]){
         table.reservations.splice(i, 1);
       }
     }
@@ -53,7 +53,7 @@ tableSchema.findByIdAndRemoveReservation = function(id, reservationId){
   });
 };
 
-tableSchema.findByIdAndAddCustomer = function(id, customer){
+Table.findByIdAndAddCustomer = function(id, customer){
   debug('findByIdAndAddCustomer');
 
   return Table.findById(id)
@@ -68,24 +68,24 @@ tableSchema.findByIdAndAddCustomer = function(id, customer){
     return this.tempTable.save();
   })
   .then(() => {
-    return this.tempReservation;
+    return this.tempCustomer;
   });
 };
 
-tableSchema.findByIdAndRemoveCustomer = function(id, customernId){
+Table.findByIdAndRemoveCustomer = function(id, customerId){
   debug('findByIdAndRemoveCustomer');
 
   return Table.findById(id)
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(table => {
-    for(var i = 0; i < table.customerns.length; i++){
-      if(customernId == table.customerns[i]){
-        table.customerns.splice(i, 1);
+    for(var i = 0; i < table.customers.length; i++){
+      if(customerId.toString() == table.customers[i]){
+        table.customers.splice(i, 1);
       }
     }
     return Table.findByIdAndUpdate(id, table, {new: true});
   })
-  .then(() => {
-    return customernId;
+  .then(table => {
+    return table;
   });
 };

@@ -12,7 +12,8 @@ const errors = require('./lib/error-middleware.js');
 const basicAuthRouter = require('./route/basic-auth-router.js');
 const employeeRouter = require('./route/employee-router.js');
 const tableRouter = require('./route/table-router.js');
-const customerRouter = require('./route/customer-router');
+const customerRouter = require('./route/customer-router.js');
+const reservationRouter = require('./route/reservation-router.js');
 
 dotenv.load();
 
@@ -25,6 +26,7 @@ let morganFormat = process.env.PRODUCTION ? 'common:' : 'dev';
 
 app.use(cors());
 app.use(morgan(morganFormat));
+app.use(reservationRouter);
 app.use(customerRouter);
 app.use(tableRouter);
 app.use(employeeRouter);

@@ -22,7 +22,7 @@
   "homepage": "https://github.com/brials/restaurant-api#readme",
   "dependencies": {
     "aws-sdk": "^2.28.0",
-    "bcrypt": "^1.0.2",
+    "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "cors": "^2.8.1",

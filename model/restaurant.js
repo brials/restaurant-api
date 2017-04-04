@@ -4,7 +4,7 @@ const debug = require('debug')('restServ:restaurant');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-restaurantSchema = Schema({
+const restaurantSchema = Schema({
   name: {type: String, required: true},
   storeHours: {type: String, required: true},
   location: {type: String, required: true},
@@ -13,7 +13,7 @@ restaurantSchema = Schema({
   menuitems: [{type: Schema.Types.ObjectId, ref: 'menuitem'}]
 });
 
-const Restaurant = module.exports = mongoose.mode('restaurant', restaurantSchema)
+const Restaurant = module.exports = mongoose.mode('restaurant', restaurantSchema);
 
 Restaurant.findByIdAndAddEmployee = function(id, employeeId){
   debug('Restaurant.findByIdAndAddEmployee');
@@ -21,6 +21,6 @@ Restaurant.findByIdAndAddEmployee = function(id, employeeId){
   Restaurant.findById(id)
   .then(restaurant => {
     restaurant.employees.push(employeeId);
-  })
+  });
   //TODO finish this route after commit
-}
+};

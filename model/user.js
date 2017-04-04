@@ -5,7 +5,7 @@ const createError = require('http-errors');
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const Schema = mongoose.Schema;

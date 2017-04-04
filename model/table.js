@@ -26,14 +26,11 @@ Table.findByIdAndAddReservation = function(id, reservation){
     return new Reservation(reservation).save();
   })
   .then(reservation => {
-    console.log(this);
     this.tempTable.reservations.push(reservation._id);
     this.tempReservation = reservation;
-    console.log('happened')
     return Table.findByIdAndUpdate(id, this.tempTable, {new: true});
   })
   .then(() => {
-    console.log('happened also')
     return this.tempReservation;
   });
 };

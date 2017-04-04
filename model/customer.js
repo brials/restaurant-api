@@ -46,13 +46,15 @@ Customer.findByIdAndRemoveMenuItem = function(id, menuItemId){
 Customer.findByIdAndAddReservation = function(id, reservationId){
   debug('findByIdAndAddReservation');
 
-  Customer.findById(id)
+  return Customer.findById(id)
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(customer => {
     customer.reservations.push(reservationId);
     return Customer.findByIdAndUpdate(id, customer, {new: true});
   })
-  .then(customer => customer);
+  .then(() => {
+    return reservationId;
+  });
 };
 
 Customer.findByIdAndRemoveReservation = function(id, reservationId){
@@ -68,5 +70,5 @@ Customer.findByIdAndRemoveReservation = function(id, reservationId){
     }
     return Customer.findByIdAndUpdate(id, customer, {new:true});
   })
-  .then(customer => customer);
+  .then(() => reservationId);
 };

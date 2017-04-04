@@ -14,7 +14,7 @@ const restaurantSchema = Schema({
   menuitems: [{type: Schema.Types.ObjectId, ref: 'menuitem'}]
 });
 
-const Restaurant = module.exports = mongoose.mode('restaurant', restaurantSchema);
+const Restaurant = module.exports = mongoose.model('restaurant', restaurantSchema);
 
 Restaurant.findByIdAndAddEmployee = function(id, employeeId){
   debug('Restaurant.findByIdAndAddEmployee');
@@ -44,16 +44,16 @@ Restaurant.findByIdAndRemoveEmployee = function(id, employeeId){
   .then(restaurant => restaurant);
 };
 
-Restaurant.findByIdAndAddTable = function(id, tableId){
+Restaurant.findByIdAndAddTable = function(id, table){
   debug('Restaurant.findByIdAndAddTable');
 
   return Restaurant.findById(id)
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(restaurant => {
-    restaurant.tables.push(tableId);
+    restaurant.tables.push(table._id);
     return Restaurant.findByIdAndUpdate(id, restaurant, {new: true});
   })
-  .then(restaurant => restaurant);
+  .then(() => table);
 };
 
 Restaurant.findByIdAndRemoveTable = function(id, tableId){

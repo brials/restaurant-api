@@ -9,7 +9,7 @@ module.exports = function(done){
 
   var rand = Math.random() * 1000;
 
-  new Table({tableNum: rand}).save()
+  new Table({tableNum: rand, restaurantId: this.tempRestaurant._id}).save()
   .then(table => {
     this.tempTable = table;
     done();

@@ -9,6 +9,7 @@ const userMock = require('./lib/user-mock.js');
 const employeeMock = require('./lib/employee-mock.js');
 const tableMock = require('./lib/table-mock.js');
 const cleanDB = require('./lib/test-remove.js');
+const restaurantMock = require('./lib/restaurant-mock.js');
 
 const Employee = require('../model/employee.js');
 
@@ -28,11 +29,20 @@ describe('Table Route Tests', function(){
   before(done => serverToggle.serverOn(server, done));
   after(done => serverToggle.serverOff(server, done));
   afterEach(done => cleanDB(done));
-  describe('POST /api/table', function(){
+  describe('POST /api/restaurant/:restaurantId/table', function(){
     beforeEach(done => userMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
+    beforeEach(done => {
+      exampleTable.restaurantId = this.tempRestaurant._id;
+      done();
+    });
+    afterEach(done => {
+      delete exampleTable.restaurantId;
+      done();
+    });
     describe('with a valid body and token', () => {
       it('should return a table', done => {
-        request.post(`${url}/api/table`)
+        request.post(`${url}/api/restaurant/${this.tempRestaurant._id}/table`)
         .send(exampleTable)
         .set({
           Authorization: `Bearer ${this.tempToken}`
@@ -47,7 +57,7 @@ describe('Table Route Tests', function(){
     });
     describe('with a valid body', () => {
       it('should return a table', done => {
-        request.post(`${url}/api/table`)
+        request.post(`${url}/api/restaurant/${this.tempRestaurant._id}/table`)
         .send(exampleTable)
         .end((err, res) => {
           expect(res.status).to.equal(401);
@@ -57,7 +67,7 @@ describe('Table Route Tests', function(){
     });
     describe('with a valid token', () => {
       it('should return a table', done => {
-        request.post(`${url}/api/table`)
+        request.post(`${url}/api/restaurant/${this.tempRestaurant._id}/table`)
         .set({
           Authorization: `Bearer ${this.tempToken}`
         })
@@ -71,6 +81,7 @@ describe('Table Route Tests', function(){
   describe('GET /api/table/:id', function(){
     beforeEach(done => userMock.call(this, done));
     beforeEach(done => employeeMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => tableMock.call(this, done));
     describe('with a valid id and token', () => {
       it('should return a table', done => {
@@ -111,6 +122,7 @@ describe('Table Route Tests', function(){
   describe('PUT /api/table/:id', function(){
     beforeEach(done => userMock.call(this, done));
     beforeEach(done => employeeMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => tableMock.call(this, done));
     describe('with a valid id, token, and body', () => {
       it('should return an updated table', done => {
@@ -166,6 +178,7 @@ describe('Table Route Tests', function(){
   describe('PUT /api/employee/:employeeId/addTable/:tableId', function(){
     beforeEach(done => userMock.call(this, done));
     beforeEach(done => employeeMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => tableMock.call(this, done));
     describe('with 2 valid ids and a token', () => {
       it('should update the array on a employee', done => {
@@ -218,6 +231,7 @@ describe('Table Route Tests', function(){
   describe('PUT /api/employee/:employeeId/removeTable/:tableId', function(){
     beforeEach(done => userMock.call(this, done));
     beforeEach(done => employeeMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => tableMock.call(this, done));
     beforeEach(done => {
       this.tempEmployee.tables.push(this.tempTable._id);
@@ -279,6 +293,7 @@ describe('Table Route Tests', function(){
   describe('Delete /api/employee/:employeeId/table/:tableId', function(){
     beforeEach(done => userMock.call(this, done));
     beforeEach(done => employeeMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => tableMock.call(this, done));
     beforeEach(done => {
       this.tempEmployee.tables.push(this.tempTable._id);

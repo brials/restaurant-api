@@ -28,7 +28,7 @@ Table.findByIdAndAddReservation = function(id, reservation){
   .then(reservation => {
     this.tempTable.reservations.push(reservation._id);
     this.tempReservation = reservation;
-    return this.tempTable.save();
+    return Table.findByIdAndUpdate(id, this.tempTable, {new: true});
   })
   .then(() => {
     return this.tempReservation;

@@ -43,7 +43,7 @@ Table.findByIdAndRemoveReservation = function(id, reservationId){
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(table => {
     for(var i = 0; i < table.reservations.length; i++){
-      if(reservationId.toString() == table.reservations[i]){
+      if(reservationId.toString() == table.reservations[i].toString()){
         table.reservations.splice(i, 1);
       }
     }
@@ -80,7 +80,7 @@ Table.findByIdAndRemoveCustomer = function(id, customerId){
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(table => {
     for(var i = 0; i < table.customers.length; i++){
-      if(customerId.toString() == table.customers[i]){
+      if(customerId.toString() == table.customers[i].toString()){
         table.customers.splice(i, 1);
       }
     }

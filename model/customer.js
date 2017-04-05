@@ -34,7 +34,7 @@ Customer.findByIdAndRemoveMenuitem = function(id, menuitemId){
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(customer => {
     for(var i = 0; i < customer.menuitems.length; i++){
-      if(customer.menuitems[i].toString() == menuitemId){
+      if(customer.menuitems[i].toString() == menuitemId.toString()){
         customer.menuitems.splice(i, 1);
         break;
       }
@@ -65,7 +65,7 @@ Customer.findByIdAndRemoveReservation = function(id, reservationId){
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(customer => {
     for(var i = 0; i < customer.reservations.length; i++){
-      if(customer.reservations[i] == reservationId.toString()){
+      if(customer.reservations[i].toString() == reservationId.toString()){
         customer.reservations.splice(i, 1);
       }
     }

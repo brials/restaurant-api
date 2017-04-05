@@ -6,7 +6,7 @@ const Router = require('express').Router;
 
 const bodyParser = require('body-parser').json();
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
-const Menuitem = require('../model/menuitem.js');
+const Menuitem = require('../model/menuItem.js');
 const Restaurant = require('../model/restaurant.js');
 const Customer = require('../model/customer.js');
 

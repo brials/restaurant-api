@@ -1,7 +1,7 @@
 'use strict';
 
 const debug = require('debug')('restServ:menuitem-mock');
-const Menuitem = require('../../model/menuitem.js');
+const Menuitem = require('../../model/menuItem.js');
 const lorem = require('lorem-ipsum');
 
 module.exports = function(done){

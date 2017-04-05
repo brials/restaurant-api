@@ -63,14 +63,15 @@ tableRouter.put('/api/employee/:employeeId/removeTable/:tableId', bearerAuth, fu
   .catch(next);
 });
 
-tableRouter.delete('/api/employee/:employeeId/table/:tableId', bearerAuth, function(req, res, next){
+tableRouter.delete('/api/employee/:employeeId/restaurant/:restaurantId/table/:tableId', bearerAuth, function(req, res, next){
   debug('DELETE /api/table/:id');
-
-  Employee.findByIdAndRemoveTable(req.params.employeeId, req.params.tableId);
 
   Table.findByIdAndRemove(req.params.tableId)
   .then(() => {
     return Employee.findByIdAndRemoveTable(req.params.employeeId, req.params.tableId);
+  })
+  .then(() => {
+    return Restaurant.findByIdAndRemoveTable(req.params.restaurantId, req.params.tableId);
   })
   .then(() => res.sendStatus(204))
   .catch(next);

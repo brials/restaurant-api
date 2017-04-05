@@ -304,9 +304,9 @@ describe('Table Route Tests', function(){
       })
       .catch(done);
     });
-    describe('with 2 valid ids and a token', () => {
+    describe('with 3 valid ids and a token', () => {
       it('should return a 404', done => {
-        request.delete(`${url}/api/employee/${this.tempEmployee._id}/table/${this.tempTable._id}`)
+        request.delete(`${url}/api/employee/${this.tempEmployee._id}/restaurant/${this.tempRestaurant._id}/table/${this.tempTable._id}`)
         .set({
           Authorization: `Bearer ${this.tempToken}`
         })
@@ -317,9 +317,9 @@ describe('Table Route Tests', function(){
         });
       });
     });
-    describe('with 1 valid id and a token', () => {
+    describe('with 2 valid id and a token', () => {
       it('should return a 404', done => {
-        request.delete(`${url}/api/employee/badid/table/${this.tempTable._id}`)
+        request.delete(`${url}/api/employee/badId/restaurant/${this.tempRestaurant._id}/table/${this.tempTable._id}`)
         .set({
           Authorization: `Bearer ${this.tempToken}`
         })
@@ -329,9 +329,9 @@ describe('Table Route Tests', function(){
         });
       });
     });
-    describe('with 1 valid id and a token', () => {
+    describe('with 2 valid id and a token', () => {
       it('should return a 404', done => {
-        request.delete(`${url}/api/employee/${this.tempEmployee._id}/table/badid`)
+        request.delete(`${url}/api/employee/${this.tempEmployee._id}/restaurant/badid/table/${this.tempTable._id}`)
         .set({
           Authorization: `Bearer ${this.tempToken}`
         })
@@ -341,9 +341,21 @@ describe('Table Route Tests', function(){
         });
       });
     });
-    describe('with 2 valid id and no token', () => {
+    describe('with 2 valid id and a token', () => {
+      it('should return a 404', done => {
+        request.delete(`${url}/api/employee/${this.tempEmployee._id}/restaurant/${this.tempRestaurant._id}/table/badid`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+    describe('with 3 valid id and no token', () => {
       it('should return a 401', done => {
-        request.delete(`${url}/api/employee/${this.tempEmployee._id}/table/${this.tempTable._id}`)
+        request.delete(`${url}/api/employee/${this.tempEmployee._id}/restaurant/${this.tempRestaurant._id}/table/${this.tempTable._id}`)
         .end((err, res) => {
           expect(res.status).to.equal(401);
           done();

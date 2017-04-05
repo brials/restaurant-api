@@ -12,6 +12,7 @@ const mockTable = require('./lib/table-mock.js');
 const userMock = require('./lib/user-mock.js');
 const customerMock = require('./lib/customer-mock.js');
 const reservationMock = require('./lib/reservation-mock.js');
+const restaurantMock = require('./lib/restaurant-mock.js');
 
 const url = `http://localhost:${process.env.PORT}`;
 const serverToggle = require('./lib/server-toggle.js');
@@ -27,6 +28,7 @@ describe('Reservation Routes', function(){
   afterEach(done => cleanDB(done));
   describe('POST /api/reservation/table/:tableId/customer/:customerId', function(){
     beforeEach(done => userMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => mockTable.call(this, done));
     beforeEach(done => customerMock.call(this, done));
     beforeEach(done => {
@@ -119,6 +121,7 @@ describe('Reservation Routes', function(){
   });
   describe('GET /api/reservation/:id', function(){
     beforeEach(done => userMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => mockTable.call(this, done));
     beforeEach(done => customerMock.call(this, done));
     beforeEach(done => reservationMock.call(this, done));
@@ -160,6 +163,7 @@ describe('Reservation Routes', function(){
   });
   describe('PUT /api/reservation/:id', function(){
     beforeEach(done => userMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => mockTable.call(this, done));
     beforeEach(done => customerMock.call(this, done));
     beforeEach(done => reservationMock.call(this, done));
@@ -216,6 +220,7 @@ describe('Reservation Routes', function(){
   });
   describe('DELETE /api/reservation/:id', function(){
     beforeEach(done => userMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => mockTable.call(this, done));
     beforeEach(done => customerMock.call(this, done));
     beforeEach(done => reservationMock.call(this, done));

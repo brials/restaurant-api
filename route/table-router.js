@@ -8,15 +8,19 @@ const bearerAuth = require('../lib/bearer-auth-middleware.js');
 
 const Table = require('../model/table.js');
 const Employee = require('../model/employee.js');
+const Restaurant = require('../model/restaurant.js');
 
 const tableRouter = module.exports = Router();
 
-tableRouter.post('/api/table', bearerAuth, jsonParser, function(req, res, next){
+tableRouter.post('/api/restaurant/:restaurantId/table', bearerAuth, jsonParser, function(req, res, next){
   debug('POST /api/table');
 
   if(!req.body.tableNum) return next(createError(400, 'expected table number'));
 
   return new Table(req.body).save()
+  .then(table => {
+    return Restaurant.findByIdAndAddTable(req.params.restaurantId, table);
+  })
   .then(table => res.json(table))
   .catch(next);
 });
@@ -59,14 +63,15 @@ tableRouter.put('/api/employee/:employeeId/removeTable/:tableId', bearerAuth, fu
   .catch(next);
 });
 
-tableRouter.delete('/api/employee/:employeeId/table/:tableId', bearerAuth, function(req, res, next){
+tableRouter.delete('/api/employee/:employeeId/restaurant/:restaurantId/table/:tableId', bearerAuth, function(req, res, next){
   debug('DELETE /api/table/:id');
-
-  Employee.findByIdAndRemoveTable(req.params.employeeId, req.params.tableId);
 
   Table.findByIdAndRemove(req.params.tableId)
   .then(() => {
     return Employee.findByIdAndRemoveTable(req.params.employeeId, req.params.tableId);
+  })
+  .then(() => {
+    return Restaurant.findByIdAndRemoveTable(req.params.restaurantId, req.params.tableId);
   })
   .then(() => res.sendStatus(204))
   .catch(next);

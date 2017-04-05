@@ -7,9 +7,12 @@ const awsMocks = require('./lib/aws-mocks.js'); //eslint-disable-line
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
 
+const Restaurant = require('../model/restaurant.js');
+
 const cleanDB = require('./lib/test-remove.js');
 const mockEmployee = require('./lib/employee-mock.js');
 const mockUser = require('./lib/user-mock.js');
+const mockRestaurant = require('./lib/restaurant-mock.js');
 
 const url = `http://localhost:${process.env.PORT}`;
 const serverToggle = require('./lib/server-toggle.js');
@@ -218,6 +221,119 @@ describe('Employee Route Tests', function(){
         })
         .end((err, res) => {
           expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    });
+  });
+  describe('PUT /api/restaurant/:restaurantId/addEmployee/:employeeId', function(){
+    beforeEach(done => mockUser.call(this, done));
+    beforeEach(done => mockEmployee.call(this, done));
+    beforeEach(done => mockRestaurant.call(this, done));
+    describe('With 2 valid ids and a token', () => {
+      it('should return an updated restaurant', done => {
+        request.put(`${url}/api/restaurant/${this.tempRestaurant._id}/addEmployee/${this.tempEmployee._id}`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.employees.length).to.equal(1);
+          done();
+        });
+      });
+    });
+    describe('With 1 valid ids and a token', () => {
+      it('should return an 404', done => {
+        request.put(`${url}/api/restaurant/badid/addEmployee/${this.tempEmployee._id}`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+    describe('With 1 valid ids and a token', () => {
+      it('should return an 404', done => {
+        request.put(`${url}/api/restaurant/${this.tempRestaurant._id}/addEmployee/badid`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+    describe('With 2 valid ids', () => {
+      it('should return an 401', done => {
+        request.put(`${url}/api/restaurant/${this.tempRestaurant._id}/addEmployee/${this.tempEmployee._id}`)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      });
+    });
+  });
+  describe('PUT /api/restaurant/:restaurantId/removeEmployee/:employeeId', function(){
+    beforeEach(done => mockUser.call(this, done));
+    beforeEach(done => mockEmployee.call(this, done));
+    beforeEach(done => mockRestaurant.call(this, done));
+    beforeEach(done => {
+      this.tempRestaurant.employees.push(this.tempEmployee._id);
+      Restaurant.findByIdAndUpdate(this.tempRestaurant._id, this.tempRestaurant, {new:true})
+      .then(restaurant => {
+        this.tempRestaurant = restaurant;
+        done();
+      })
+      .catch(done);
+    });
+    describe('With 2 valid ids and a token', () => {
+      it('should return an updated restaurant', done => {
+        request.put(`${url}/api/restaurant/${this.tempRestaurant._id}/removeEmployee/${this.tempEmployee._id}`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.employees.length).to.equal(0);
+          done();
+        });
+      });
+    });
+    describe('With 1 valid ids and a token', () => {
+      it('should return an 404', done => {
+        request.put(`${url}/api/restaurant/badid/removeEmployee/${this.tempEmployee._id}`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+    describe('With 1 valid ids and a token', () => {
+      it('should return an 404', done => {
+        request.put(`${url}/api/restaurant/${this.tempRestaurant._id}/removeEmployee/badid`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+    describe('With 2 valid ids', () => {
+      it('should return an 401', done => {
+        request.put(`${url}/api/restaurant/${this.tempRestaurant._id}/removeEmployee/${this.tempEmployee._id}`)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
           done();
         });
       });

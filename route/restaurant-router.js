@@ -1,8 +1,6 @@
 'use strict';
 
-'use strict';
-
-const debug = require('debug')('restServ:customerRouter');
+const debug = require('debug')('restServ:restaurantRouter');
 const createError = require('http-errors');
 const Router = require('express').Router;
 

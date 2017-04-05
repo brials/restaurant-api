@@ -91,7 +91,7 @@ describe('Customer Routes', function(){
           if(err) return done(err);
           expect(res.status).to.equal(200);
           expect(res.body.tableId).to.equal(this.tempTable._id.toString());
-          expect(res.body.menuItems.length).to.equal(0);
+          expect(res.body.menuitems.length).to.equal(0);
           done();
         });
       });

@@ -27,6 +27,7 @@ employeeRouter.get('/api/employee/:id', bearerAuth, function(req, res, next){
   debug('GET /api/employee/:id');
 
   Employee.findById(req.params.id)
+  .populate('tables')
   .then(employee => res.json(employee))
   .catch(next);
 });
@@ -66,5 +67,3 @@ employeeRouter.delete('/api/employee/:id', bearerAuth, function(req, res, next){
   .then(() => res.sendStatus(204))
   .catch(next);
 });
-
-//TODO add routes to add an employee to a restaurant and remove them from

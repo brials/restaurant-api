@@ -23,6 +23,8 @@ customerRouter.get('/api/customer/:id', bearerAuth, function(req, res, next){
   debug('GET /api/customer/:id');
 
   Customer.findById(req.params.id)
+  .populate('reservations')
+  .populate('menuitems')
   .then(customer => res.json(customer))
   .catch(next);
 });

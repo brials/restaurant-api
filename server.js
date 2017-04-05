@@ -10,6 +10,7 @@ const debug = require('debug')('restServ:server');
 
 const errors = require('./lib/error-middleware.js');
 const basicAuthRouter = require('./route/basic-auth-router.js');
+const menuitemRouter = require('./route/menuitem-router.js');
 const employeeRouter = require('./route/employee-router.js');
 const tableRouter = require('./route/table-router.js');
 const customerRouter = require('./route/customer-router.js');
@@ -27,6 +28,7 @@ let morganFormat = process.env.PRODUCTION ? 'common:' : 'dev';
 
 app.use(cors());
 app.use(morgan(morganFormat));
+app.use(menuitemRouter);
 app.use(restaurantRouter);
 app.use(reservationRouter);
 app.use(customerRouter);

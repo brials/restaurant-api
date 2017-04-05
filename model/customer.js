@@ -8,39 +8,40 @@ const Schema = mongoose.Schema;
 const customerSchema = Schema({
   tableId: {type: Schema.Types.ObjectId, required: true},
   reservations: [{type: Schema.Types.ObjectId, ref: 'reservation'}],
-  menuItems: [{type: Schema.Types.ObjectId, ref: 'menuItem'}],
+  menuitems: [{type: Schema.Types.ObjectId, ref: 'menuitem'}],
   arrivalTime: {type: Date, default: Date.now},
   lastVisit: {type: Date, default: Date.now}
 });
 
 const Customer = module.exports = mongoose.model('customer', customerSchema);
 
-Customer.findByIdAndAddMenuItem = function(id, menuItemId){
-  debug('findByIdAndAddMenuItem');
+Customer.findByIdAndAddMenuitem = function(id, menuitemId){
+  debug('findByIdAndAddmenuitem');
 
-  Customer.findById(id)
+  return Customer.findById(id)
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(customer => {
-    customer.menuItems.push(menuItemId);
+    customer.menuitems.push(menuitemId);
     return Customer.findByIdAndUpdate(id, customer, {new: true});
   })
   .then(customer => customer);
 };
 
-Customer.findByIdAndRemoveMenuItem = function(id, menuItemId){
-  debug('findByIdAndRemoveMenuItem');
+Customer.findByIdAndRemoveMenuitem = function(id, menuitemId){
+  debug('findByIdAndRemoveMenuitem');
 
-  Customer.findById(id)
+  return Customer.findById(id)
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(customer => {
-    for(var i = 0; i < customer.menuItems.length; i++){
-      if(customer.menuItems[i] == menuItemId.toString()){
-        customer.menuItems.splice(i, 1);
+    for(var i = 0; i < customer.menuitems.length; i++){
+      if(customer.menuitems[i].toString() == menuitemId){
+        customer.menuitems.splice(i, 1);
+        break;
       }
     }
     return Customer.findByIdAndUpdate(id, customer, {new:true});
   })
-  .then(customer => customer);
+  .then(customer =>customer);
 };
 
 Customer.findByIdAndAddReservation = function(id, reservationId){

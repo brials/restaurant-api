@@ -15,7 +15,33 @@ const restaurantRouter = module.exports = Router();
 restaurantRouter.post('/api/restaurant', bearerAuth, bodyParser, function(req, res, next){
   debug('POST /api/restaurant');
 
+  if(!req.body.name || !req.body.storeHours || !req.body.location) return next(createError(400, 'need a name, location and storeHours'));
   return new Restaurant(req.body).save()
   .then(restaurant => res.json(restaurant))
+  .catch(next);
+});
+
+restaurantRouter.get('/api/restaurant/:id', bearerAuth, function(req, res, next){
+  debug('GET /api/restaurant/:id');
+
+  Restaurant.findById(req.params.id)
+  .then(restaurant => res.json(restaurant))
+  .catch(next);
+});
+
+restaurantRouter.put('/api/restaurant/:id', bearerAuth, bodyParser, function(req, res, next){
+  debug('PUT /api/restaurant/:id');
+
+  if(!req.body.name || !req.body.storeHours || !req.body.location) return next(createError(400, 'need a name, location and storeHours'));
+  Restaurant.findByIdAndUpdate(req.params.id, req.body, {new:true})
+  .then(restaurant => res.json(restaurant))
+  .catch(next);
+});
+
+restaurantRouter.delete('/api/restaurant/:id', bearerAuth, function(req, res, next){
+  debug('DELETE /api/restaurant/:id');
+
+  Restaurant.findByIdAndRemove(req.params.id)
+  .then(() => res.sendStatus(204))
   .catch(next);
 });

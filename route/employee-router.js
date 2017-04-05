@@ -8,6 +8,7 @@ const jsonParser = require('body-parser').json();
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
 
 const Employee = require('../model/employee.js');
+const Restaurant = require('../model/restaurant.js');
 
 const employeeRouter = module.exports = Router();
 
@@ -26,6 +27,7 @@ employeeRouter.get('/api/employee/:id', bearerAuth, function(req, res, next){
   debug('GET /api/employee/:id');
 
   Employee.findById(req.params.id)
+  .populate('tables')
   .then(employee => res.json(employee))
   .catch(next);
 });
@@ -41,11 +43,27 @@ employeeRouter.put('/api/employee/:id', bearerAuth, jsonParser, function(req, re
   .catch(next);
 });
 
+employeeRouter.put('/api/restaurant/:restaurantId/addEmployee/:employeeId', bearerAuth, function(req, res, next){
+  debug('/api/restaurant/:restaurantId/addEmployee/:employeeId');
+
+  Restaurant.findByIdAndAddEmployee(req.params.restaurantId, req.params.employeeId)
+  .then(restaurant => res.json(restaurant))
+  .catch(next);
+});
+
+employeeRouter.put('/api/restaurant/:restaurantId/removeEmployee/:employeeId', bearerAuth, function(req, res, next){
+  debug('/api/restaurant/:restaurantId/removeEmployee/:employeeId');
+  Employee.findById(req.params.employeeId)
+  .then(employee => {
+    return Restaurant.findByIdAndRemoveEmployee(req.params.restaurantId, employee._id);
+  })
+  .then(restaurant => res.json(restaurant))
+  .catch(next);
+});
+
 employeeRouter.delete('/api/employee/:id', bearerAuth, function(req, res, next){
   debug('DELETE /api/employee/:id');
   Employee.findByIdAndRemove(req.params.id)
   .then(() => res.sendStatus(204))
   .catch(next);
 });
-
-//TODO add routes to add an employee to a restaurant and remove them from 

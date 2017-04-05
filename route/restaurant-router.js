@@ -23,6 +23,9 @@ restaurantRouter.get('/api/restaurant/:id', bearerAuth, function(req, res, next)
   debug('GET /api/restaurant/:id');
 
   Restaurant.findById(req.params.id)
+  .populate('employees')
+  .populate('tables')
+  .populate('menuitems')
   .then(restaurant => res.json(restaurant))
   .catch(next);
 });

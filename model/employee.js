@@ -34,7 +34,7 @@ Employee.findByIdAndRemoveTable = function(id, tableId){
   return Employee.findById(id)
   .then(employee => {
     for(var i = 0; i < employee.tables.length; i++){
-      if(employee.tables[i] == tableId.toString()){
+      if(employee.tables[i].toString() == tableId.toString()){
         employee.tables.splice(i, 1);
       }
     }

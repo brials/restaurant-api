@@ -72,16 +72,16 @@ Restaurant.findByIdAndRemoveTable = function(id, tableId){
   .then(restaurant => restaurant);
 };
 
-Restaurant.findByIdAndAddMenuitem = function(id, menuitemId){
+Restaurant.findByIdAndAddMenuitem = function(id, menuitem){
   debug('Restaurant.findByIdAndAddMenuitem');
 
   return Restaurant.findById(id)
   .catch(err => Promise.reject(createError(404, err.message)))
   .then(restaurant => {
-    restaurant.menuitems.push(menuitemId);
+    restaurant.menuitems.push(menuitem._id);
     return Restaurant.findByIdAndUpdate(id, restaurant, {new: true});
   })
-  .then(restaurant => restaurant);
+  .then(() => menuitem);
 };
 
 Restaurant.findByIdAndRemoveMenuitem = function(id, menuitemId){

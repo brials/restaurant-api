@@ -26,6 +26,19 @@ describe('USER TESTS', function(){
   before(done => serverToggle.serverOn(server, done));
   after(done => serverToggle.serverOff(server, done));
   afterEach(done => cleanDB(done));
+  describe('GET /', function(){
+    describe('testing basic route', function(){
+      it('should return some text', done => {
+        request.get(`${url}/`)
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.text).to.equal('WOO I can make an App');
+          done();
+        });
+      });
+    });
+  });
   describe('POST /api/signup', function(){
     describe('with a valid body', function(){
       it('should return a token', done => {

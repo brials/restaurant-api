@@ -11,6 +11,7 @@ const cleanDB = require('./lib/test-remove.js');
 const mockTable = require('./lib/table-mock.js');
 const userMock = require('./lib/user-mock.js');
 const customerMock = require('./lib/customer-mock.js');
+const restaurantMock = require('./lib/restaurant-mock.js');
 
 const url = `http://localhost:${process.env.PORT}`;
 const serverToggle = require('./lib/server-toggle.js');
@@ -22,6 +23,7 @@ describe('Customer Routes', function(){
   afterEach(done => cleanDB(done));
   describe('POST /api/table/:tableId/customer', function(){
     beforeEach(done => userMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => mockTable.call(this, done));
     describe('with a valid id, body, and token', () => {
       it('should return a customer', done => {
@@ -76,6 +78,7 @@ describe('Customer Routes', function(){
   });
   describe('GET /api/customer/:id', function(){
     beforeEach(done => userMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => mockTable.call(this, done));
     beforeEach(done => customerMock.call(this, done));
     describe('With a valid id and token', () => {
@@ -117,6 +120,7 @@ describe('Customer Routes', function(){
   });
   describe('PUT /api/customer/:id', function(){
     beforeEach(done => userMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => mockTable.call(this, done));
     beforeEach(done => customerMock.call(this, done));
     describe('With a  valid body id and token', () => {
@@ -172,6 +176,7 @@ describe('Customer Routes', function(){
   });
   describe('DELETE /api/table/:tableId/customer/:id', function(){
     beforeEach(done => userMock.call(this, done));
+    beforeEach(done => restaurantMock.call(this, done));
     beforeEach(done => mockTable.call(this, done));
     beforeEach(done => customerMock.call(this, done));
     describe('with 2 valid ids and token', () => {

@@ -14,6 +14,7 @@ const employeeRouter = require('./route/employee-router.js');
 const tableRouter = require('./route/table-router.js');
 const customerRouter = require('./route/customer-router.js');
 const reservationRouter = require('./route/reservation-router.js');
+const restaurantRouter = require('./route/restaurant-router.js');
 
 dotenv.load();
 
@@ -26,6 +27,7 @@ let morganFormat = process.env.PRODUCTION ? 'common:' : 'dev';
 
 app.use(cors());
 app.use(morgan(morganFormat));
+app.use(restaurantRouter);
 app.use(reservationRouter);
 app.use(customerRouter);
 app.use(tableRouter);

@@ -10,6 +10,7 @@ const Customer = require('./customer.js');
 
 const tableSchema = Schema({
   tableNum: {type: Number, required: true},
+  restaurantId: {type: Schema.Types.ObjectId, required: true},
   customers: [{type: Schema.Types.ObjectId, ref: 'customer' }],
   reservations: [{type: Schema.Types.ObjectId, ref: 'reservation'}]
 });

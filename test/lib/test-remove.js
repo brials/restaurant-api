@@ -7,6 +7,7 @@ const Employee = require('../../model/employee.js');
 const Table = require('../../model/table.js');
 const Customer = require('../../model/customer.js');
 const Reservation = require('../../model/reservation.js');
+const Restaurant = require('../../model/restaurant.js');
 
 module.exports = function(done){
   debug('test-remove');
@@ -15,7 +16,8 @@ module.exports = function(done){
     Employee.remove({}),
     Table.remove({}),
     Customer.remove({}),
-    Reservation.remove({})
+    Reservation.remove({}),
+    Restaurant.remove({})
   ])
   .then(() => done())
   .catch(done);

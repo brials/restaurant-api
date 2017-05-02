@@ -122,6 +122,36 @@ describe('Restaurant Router Tests', function(){
       });
     });
   });
+  describe('GET /api/restaurant', function(){
+    beforeEach(done => mockUser.call(this, done));
+    beforeEach(done => mockRestaurant.call(this, done));
+    describe('with a valid token', () => {
+      it('should return an array of restaurants', done => {
+        request.get(`${url}/api/restaurant/`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.length).to.equal(1);
+          expect(res.body[0].name).to.be.a('String');
+          expect(res.body[0].storeHours).to.be.a('String');
+          expect(res.body[0].location).to.be.a('String');
+          done();
+        });
+      });
+    });
+    describe('without a valid token', () => {
+      it('should return a 401', done => {
+        request.get(`${url}/api/restaurant/`)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      });
+    });  
+  });
   describe('PUT /api/restaurant/:id', function(){
     beforeEach(done => mockUser.call(this, done));
     beforeEach(done => mockRestaurant.call(this, done));

@@ -16,7 +16,7 @@ tableRouter.post('/api/restaurant/:restaurantId/table', bearerAuth, jsonParser, 
   debug('POST /api/table');
 
   if(!req.body.tableNum) return next(createError(400, 'expected table number'));
-
+  if(!req.body.restaurantId) req.body.restaurantId = req.params.restaurantId
   return new Table(req.body).save()
   .then(table => {
     return Restaurant.findByIdAndAddTable(req.params.restaurantId, table);

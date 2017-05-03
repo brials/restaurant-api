@@ -6,7 +6,7 @@ const debug = require('debug')('restServ:employee');
 const createError = require('http-errors');
 
 const employeeSchema = Schema({
-  name: {type: String, required: true},
+  name: {type: String, required: true, unique: true},
   employeeTitle: {type: String, required: true},
   hoursLogged: {type: Number},
   userId: {type: Schema.Types.ObjectId, required: true},

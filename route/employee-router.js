@@ -17,7 +17,7 @@ employeeRouter.post('/api/employee', bearerAuth, jsonParser, function(req, res, 
 
   if(!req.body.name) return next(createError(400, 'expected a name'));
   if(!req.body.employeeTitle) return next(createError(400, 'expected a title'));
-
+  if(!req.body.userId) req.body.userId = req.user._id;
   new Employee(req.body).save()
   .then(employee => res.json(employee))
   .catch(next);

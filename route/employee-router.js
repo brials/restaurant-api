@@ -32,6 +32,15 @@ employeeRouter.get('/api/employee/:id', bearerAuth, function(req, res, next){
   .catch(next);
 });
 
+employeeRouter.get('/api/employee', bearerAuth, function(req, res, next){
+  debug('GET /api/employee');
+
+  Employee.find()
+  .populate('tables')
+  .then(employees => res.json(employees))
+  .catch(next);
+});
+
 employeeRouter.put('/api/employee/:id', bearerAuth, jsonParser, function(req, res, next){
   debug('PUT /api/employee/:id');
 

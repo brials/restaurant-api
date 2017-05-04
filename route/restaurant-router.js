@@ -30,6 +30,17 @@ restaurantRouter.get('/api/restaurant/:id', bearerAuth, function(req, res, next)
   .catch(next);
 });
 
+restaurantRouter.get('/api/restaurant', bearerAuth, function(req, res, next){
+  debug('GET /api/restaurant/:id');
+
+  Restaurant.find({})
+  .populate('employees')
+  .populate('tables')
+  .populate('menuitems')
+  .then(restaurants => res.json(restaurants))
+  .catch(next);
+});
+
 restaurantRouter.put('/api/restaurant/:id', bearerAuth, bodyParser, function(req, res, next){
   debug('PUT /api/restaurant/:id');
 

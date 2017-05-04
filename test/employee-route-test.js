@@ -157,6 +157,34 @@ describe('Employee Route Tests', function(){
       });
     });
   });
+  describe('GET /api/employee', function(){
+    beforeEach(done => mockUser.call(this, done));
+    beforeEach(done => mockEmployee.call(this, done));
+    describe('with a valid token', () => {
+      it('should return an employee', done => {
+        request.get(`${url}/api/employee`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.length).to.equal(1);
+          expect(res.body[0].name).to.be.a('string');
+          done();
+        });
+      });
+    });
+    describe('without a valid token', () => {
+      it('should return an 401', done => {
+        request.get(`${url}/api/employee`)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      });
+    });
+  });
   describe('PUT /api/employee/:id', function(){
     beforeEach(done => mockUser.call(this, done));
     beforeEach(done => mockEmployee.call(this, done));

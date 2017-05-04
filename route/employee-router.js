@@ -17,7 +17,7 @@ employeeRouter.post('/api/employee', bearerAuth, jsonParser, function(req, res, 
 
   if(!req.body.name) return next(createError(400, 'expected a name'));
   if(!req.body.employeeTitle) return next(createError(400, 'expected a title'));
-
+  if(!req.body.userId) req.body.userId = req.user._id;
   new Employee(req.body).save()
   .then(employee => res.json(employee))
   .catch(next);
@@ -29,6 +29,15 @@ employeeRouter.get('/api/employee/:id', bearerAuth, function(req, res, next){
   Employee.findById(req.params.id)
   .populate('tables')
   .then(employee => res.json(employee))
+  .catch(next);
+});
+
+employeeRouter.get('/api/employee', bearerAuth, function(req, res, next){
+  debug('GET /api/employee');
+
+  Employee.find()
+  .populate('tables')
+  .then(employees => res.json(employees))
   .catch(next);
 });
 

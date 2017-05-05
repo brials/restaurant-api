@@ -29,6 +29,16 @@ customerRouter.get('/api/customer/:id', bearerAuth, function(req, res, next){
   .catch(next);
 });
 
+customerRouter.get('/api/customer', bearerAuth, function(req, res, next){
+  debug('GET /api/customer');
+
+  Customer.find({})
+  .populate('reservations')
+  .populate('menuitems')
+  .then(customer => res.json(customer))
+  .catch(next);
+});
+
 customerRouter.put('/api/customer/:id', bearerAuth, bodyParser, function(req, res, next){
   debug('PUT /api/customer/:id');
 

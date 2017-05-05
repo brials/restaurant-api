@@ -35,6 +35,17 @@ tableRouter.get('/api/table/:id', bearerAuth, function(req, res, next){
   .catch(next);
 });
 
+tableRouter.get('/api/table', bearerAuth, function(req, res, next){
+  debug('GET /api/table');
+
+  return Table.find({})
+  .populate('customers')
+  .populate('reservations')
+  .then(table => res.json(table))
+  .catch(next);
+});
+
+
 tableRouter.put('/api/table/:id', bearerAuth, jsonParser, function(req, res, next){
   debug('PUT /api/table/:id');
 

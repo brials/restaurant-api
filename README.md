@@ -4,7 +4,7 @@
 
 # Restaurant API
 
-This is an API I built in order to practice developing an API that could work to solve a real world solution. The ERD is a little bit out of date as I have not had the time to make a new implementation. I will be building out the front end application soon.
+This is an API I built in order to practice developing an API that could work to solve a real world problem. The ERD is a little bit out of date as I have not had the time to make a new implementation. The front end has been built in React. You can find the code for the end at https://github.com/brials/restaurant-manager. Also the deployed version is at https://restaurant-manager-production.herokuapp.com.
 
 # This README file is currently under construction. While the app is mostly done I have not had time yet to write appropriate docs.
 ## I apologize for any inconvenience this may cause.
